@@ -23,7 +23,7 @@ function App() {
     <div className="App">
     <form onSubmit={handleFetchSynonyms}>
       <div className="input-group">
-        <label htmlFor='word-input'>Type the <span>word</span></label>
+        <label htmlFor='word-input'>Get the <span>Synonyms</span></label>
         <input 
           value={word}
           onChange={(e) => setWord(e.target.value)}
@@ -40,7 +40,7 @@ function App() {
         <li 
           onClick={() => handleSynonymClicked(synonym.word)}
           key={index}>
-          <p>{synonym.word}</p>
+          <p>{synonym.word} <span>({synonym.score})</span></p>
         </li>
         ))}
       </ul>
