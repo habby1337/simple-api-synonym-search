@@ -8,7 +8,7 @@ type Synonym = {
   score: number;
 };
 
-const BASE_URL = 'https://api.datamuse.com'
+const API_URL = import.meta.env.API_URL ?? 'https://api.datamuse.com'
 
 function App() {
 
@@ -18,11 +18,9 @@ function App() {
   const handleFetchSynonyms = (e: React.FormEvent<HTMLFormElement>) => { 
     e.preventDefault();
 
-    fetch(`${BASE_URL}/words?rel_syn=${word}`)
+    fetch(`${API_URL}/words?rel_syn=${word}`)
       .then((response) => response.json())
       .then((data) => setSynonyms(data));
-
-
   }
 
 
