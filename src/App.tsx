@@ -1,28 +1,23 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { fetchSynonyms } from './api/fetchSynonyms';
 import './App.css'
+import { useGetSynonyms } from './hooks/useGetSynonyms';
 
-
-type Synonym = {
-  word: string;
-  score: number;
-};
-
-const API_URL = import.meta.env.API_URL ?? 'https://api.datamuse.com'
 
 function App() {
 
   const [word, setWord] = useState<string>("");
-  const [synonyms, setSynonyms] = useState<Synonym[]>([]);
-
+  const { isLoading, synonyms, getSynonyms } = useGetSynonyms();
+  
   const handleFetchSynonyms = (e: React.FormEvent<HTMLFormElement>) => { 
     e.preventDefault();
+    getSynonyms(word);
+  };
 
-    fetch(`${API_URL}/words?rel_syn=${word}`)
-      .then((response) => response.json())
-      .then((data) => setSynonyms(data));
+  const handleSynonymClicked = (newWord: string) => {
+    setWord(newWord);
+    getSynonyms(word);
   }
-
 
   return (
     <div className="App">
@@ -35,13 +30,20 @@ function App() {
 
       <button>Submit</button>
     </form>
-    <ul>
-    {synonyms.map((synonym, index) => (
-      <li key={index}>
-        <p>{synonym.word}</p>
-      </li>)
-    )}
+
+    {isLoading ? (
+      <div>Loading...</div>
+    ) : (
+      <ul>
+        {synonyms.map((synonym, index) => (
+        <li 
+          onClick={() => handleSynonymClicked(synonym.word)}
+          key={index}>
+          <p>{synonym.word}</p>
+        </li>
+        ))}
       </ul>
+      )}
     </div>
   )
 }
