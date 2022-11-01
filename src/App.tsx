@@ -22,12 +22,13 @@ function App() {
   return (
     <div className="App">
     <form onSubmit={handleFetchSynonyms}>
-      <label htmlFor='word-input'>Your word</label>
-      <input 
-        value={word}
-        onChange={(e) => setWord(e.target.value)}
-      id="word-input" type="text" />
-
+      <div className="input-group">
+        <label htmlFor='word-input'>Type the <span>word</span></label>
+        <input 
+          value={word}
+          onChange={(e) => setWord(e.target.value)}
+          id="word-input" type="text" placeholder='type your word'/>
+      </div>
       <button>Submit</button>
     </form>
 
