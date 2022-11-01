@@ -2,17 +2,32 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 
+
+type Synonym = {
+  word: string;
+  score: number;
+};
+
+const BASE_URL = 'https://api.datamuse.com'
+
 function App() {
 
-  const [word, setWord] = useState<string>("")
+  const [word, setWord] = useState<string>("");
+  const [synonyms, setSynonyms] = useState<Synonym[]>([]);
 
   const handleFetchSynonyms = (e: React.FormEvent<HTMLFormElement>) => { 
     e.preventDefault();
+
+    fetch(`${BASE_URL}/words?rel_syn=${word}`)
+      .then((response) => response.json())
+      .then((data) => setSynonyms(data));
+
 
   }
 
 
   return (
+    <div className="App">
     <form onSubmit={handleFetchSynonyms}>
       <label htmlFor='word-input'>Your word</label>
       <input 
@@ -22,6 +37,14 @@ function App() {
 
       <button>Submit</button>
     </form>
+    <ul>
+    {synonyms.map((synonym, index) => (
+      <li key={index}>
+        <p>{synonym.word}</p>
+      </li>)
+    )}
+      </ul>
+    </div>
   )
 }
 
